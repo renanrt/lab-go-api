@@ -3,9 +3,6 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/vend/go-common/api/fail"
-	"github.com/vend/log"
 )
 
 // StatusCode defines an interface that will be used to determine if an error
@@ -60,23 +57,6 @@ func RespondWithError(w http.ResponseWriter, r *http.Request, responseErr error)
 	}
 	w.WriteHeader(code)
 
-	// Annotate the logger with the error message
-	if err, ok := responseErr.(ErrorLogger); ok {
-		// If the error is a ErrorLogger implementor, use the loggable error
-		log.RequestWithLogField(r, "message", err.LoggableError())
-	} else {
-		// Fallback to general Error implementation
-		log.RequestWithLogField(r, "message", responseErr.Error())
-	}
-
-	// If there's structured data to be added, do so here
-	if contextErr, ok := responseErr.(ErrorContext); ok {
-		context := contextErr.ErrorContext()
-		if context != nil {
-			log.RequestWithLogFields(r, log.LogFields(context))
-		}
-	}
-
 	// Create the response object
 	response := ErrorResponse{Error: responseErr.Error()}
 
@@ -91,7 +71,6 @@ func RespondWithError(w http.ResponseWriter, r *http.Request, responseErr error)
 	} else {
 		// Create a new private error as a fallback if the provided
 		// error does not implement the ErrorCode interface
-		responseErr = fail.NewPrivateError(responseErr)
 		response.Error = responseErr.Error()
 	}
 

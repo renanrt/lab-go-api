@@ -1,0 +1,9 @@
+package: github.com/renanrt/lab-go-api
+import:
+- package: github.com/julienschmidt/httprouter
+  version: v1.1
+testImport:
+- package: github.com/stretchr/testify
+  version: v1.1.4
+  subpackages:
+  - assert

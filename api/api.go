@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/vend/go-common/api/fail"
 )
 
 func Serve() error {
@@ -49,7 +48,9 @@ func searchTaxes(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	provider := queryValues.Get("provider")
 
 	if zipcode == "" {
-		RespondWithError(w, r, fail.NewAPIResponseError(errors.New("No zipcode informed"), http.StatusBadRequest))
+		err := errors.New("zipcode is mandatory")
+
+		RespondWithError(w, r, err)
 		return
 	}
 
