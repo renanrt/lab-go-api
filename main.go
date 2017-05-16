@@ -16,6 +16,8 @@ func main() {
 	switch mode {
 	case "api":
 		RunAPI()
+	case "migrate":
+		fmt.Printf("migrate mode")
 
 	default:
 		fmt.Printf("Unknown mode")
