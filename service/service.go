@@ -9,5 +9,6 @@ type TaxService struct {
 func (service *TaxService) GetTaxesForAddress(provider, retailerId, country, state, city, zipcode string, street string) (*model.TaxGroup, error) {
 	taxGroup := &model.TaxGroup{}
 	taxGroup.TotalRate = 1.0
+	taxGroup.AddTaxRate(model.NewTaxRate(model.TaxTypeCity, "my tax city", 1.0))
 	return taxGroup, nil
 }
